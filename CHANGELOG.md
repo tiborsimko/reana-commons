@@ -1,5 +1,102 @@
 # Changelog
 
+## [0.95.0](https://github.com/tiborsimko/reana-commons/compare/v0.9.8...0.95.0) (2024-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **python:** drop support for Python 3.6 and 3.7
+
+### Build
+
+* **python:** add minimal `pyproject.toml` ([#466](https://github.com/tiborsimko/reana-commons/issues/466)) ([9468850](https://github.com/tiborsimko/reana-commons/commit/94688500bf2d46fb61d165e649b127df6b827ab7))
+* **python:** change extra names to comply with PEP 685 ([#446](https://github.com/tiborsimko/reana-commons/issues/446)) ([9dad6da](https://github.com/tiborsimko/reana-commons/commit/9dad6da7b80bc07423d45dab7b6799911740a082))
+* **python:** drop support for Python 3.6 and 3.7 ([#453](https://github.com/tiborsimko/reana-commons/issues/453)) ([85cca11](https://github.com/tiborsimko/reana-commons/commit/85cca11e6d110a99b8d4b05ee936d90731238f67))
+* **python:** install snakemake compatible with Python 3.12 ([#465](https://github.com/tiborsimko/reana-commons/issues/465)) ([9c88f7c](https://github.com/tiborsimko/reana-commons/commit/9c88f7cd33ac87dff36c42ba07b0d6030c68af38))
+* **python:** remove deprecated `pytest-runner` ([#466](https://github.com/tiborsimko/reana-commons/issues/466)) ([e406a59](https://github.com/tiborsimko/reana-commons/commit/e406a59f1be817d8c570238c58eecabaae01fc16))
+* **python:** require smart-open&lt;7 for Python 3.6 ([#446](https://github.com/tiborsimko/reana-commons/issues/446)) ([17fd581](https://github.com/tiborsimko/reana-commons/commit/17fd581d4928d5c377f67bcb77c4f245e661c395))
+* **python:** restore snakemake `reports` extra ([#446](https://github.com/tiborsimko/reana-commons/issues/446)) ([904178f](https://github.com/tiborsimko/reana-commons/commit/904178fe454b9af39164a0c327f1ecd1663132af))
+* **python:** upgrade yadage dependencies ([#462](https://github.com/tiborsimko/reana-commons/issues/462)) ([2d2f631](https://github.com/tiborsimko/reana-commons/commit/2d2f6311e4821f11341d9d302ed8d74b035a15dd))
+* **python:** use optional deps instead of `tests_require` ([#466](https://github.com/tiborsimko/reana-commons/issues/466)) ([6952b62](https://github.com/tiborsimko/reana-commons/commit/6952b62d7086518edd2befa98cd421a42bb8242a))
+* **snakemake:** require pulp&lt;2.8.0 ([#444](https://github.com/tiborsimko/reana-commons/issues/444)) ([5daa109](https://github.com/tiborsimko/reana-commons/commit/5daa109a58066126c2d8a35e7cd7da70d4137f62))
+
+
+### Features
+
+* **config:** allow customisation of runtime group name ([#440](https://github.com/tiborsimko/reana-commons/issues/440)) ([5cec305](https://github.com/tiborsimko/reana-commons/commit/5cec30561ba21e2ea695e20eaea8171226f06e52))
+* **gherkin:** add gherkin parser for workflow testing ([#464](https://github.com/tiborsimko/reana-commons/issues/464)) ([cf38a92](https://github.com/tiborsimko/reana-commons/commit/cf38a92f28df3a28816adb5fade86e3c78051b11)), closes [#463](https://github.com/tiborsimko/reana-commons/issues/463)
+* **openapi:** add endpoint to fetch workflow share status ([#429](https://github.com/tiborsimko/reana-commons/issues/429)) ([6370815](https://github.com/tiborsimko/reana-commons/commit/637081531da4ba7993c402362b006f15688287e5))
+* **openapi:** add endpoint to share workflows ([#429](https://github.com/tiborsimko/reana-commons/issues/429)) ([b7a3476](https://github.com/tiborsimko/reana-commons/commit/b7a3476ef51899c5e4f0524d3926960afca57bfa))
+* **openapi:** add endpoint to unshare workflows ([#429](https://github.com/tiborsimko/reana-commons/issues/429)) ([2ec60cc](https://github.com/tiborsimko/reana-commons/commit/2ec60cc4c92006855db86173d749a65eb8d39e32))
+* **openapi:** add endpoints to fetch sharing users ([#429](https://github.com/tiborsimko/reana-commons/issues/429)) ([761a898](https://github.com/tiborsimko/reana-commons/commit/761a8982e21b9836a726f76cca55dd98f881de27))
+* **openapi:** add share-related parameters to `get_workflows` ([#429](https://github.com/tiborsimko/reana-commons/issues/429)) ([d4c0358](https://github.com/tiborsimko/reana-commons/commit/d4c03586ce55e4b24b9325fe2b1c353bf3d71684))
+* **openapi:** update workflow sharing specs after changes ([#429](https://github.com/tiborsimko/reana-commons/issues/429)) ([3f08c0a](https://github.com/tiborsimko/reana-commons/commit/3f08c0ad4b403d51264f3973285c03209d04ea33))
+* **snakemake:** upgrade to Snakemake 7.32.4 ([#435](https://github.com/tiborsimko/reana-commons/issues/435)) ([20ae9ce](https://github.com/tiborsimko/reana-commons/commit/20ae9cebf19a1fdb77ad08956db04ef026521b5d))
+
+
+### Bug fixes
+
+* **cache:** handle deleted files when calculating access times ([#437](https://github.com/tiborsimko/reana-commons/issues/437)) ([698900f](https://github.com/tiborsimko/reana-commons/commit/698900fc63e20bd54dcc4a5faa6cac0be5d0d8de))
+* **kerberos:** stop ticket renewal when pod is terminated ([#454](https://github.com/tiborsimko/reana-commons/issues/454)) ([a7bcf7a](https://github.com/tiborsimko/reana-commons/commit/a7bcf7a655dad59478f6fb0a332b9ce348539e63))
+
+
+### Performance improvements
+
+* **k8s:** avoid extraneous refetching of user secrets ([#456](https://github.com/tiborsimko/reana-commons/issues/456)) ([77d263e](https://github.com/tiborsimko/reana-commons/commit/77d263e4c5a86a74f93cd017794b85cb27d5921a)), closes [#455](https://github.com/tiborsimko/reana-commons/issues/455)
+* **kerberos:** stop ticket renewal as soon as possible ([#454](https://github.com/tiborsimko/reana-commons/issues/454)) ([08cbfa1](https://github.com/tiborsimko/reana-commons/commit/08cbfa16f08a4e814350791b5de40a40d34841b1))
+
+
+### Code refactoring
+
+* **docs:** move from reST to Markdown ([#441](https://github.com/tiborsimko/reana-commons/issues/441)) ([36ce4e0](https://github.com/tiborsimko/reana-commons/commit/36ce4e0a86484e3a7006e20545a892424ce0f3a2))
+
+
+### Test suite
+
+* fix calculate hash test ([95a719b](https://github.com/tiborsimko/reana-commons/commit/95a719b6bb67b7d981860018e0a8c509a8d1d54e))
+
+
+### Continuous integration
+
+* **actions:** update GitHub actions due to Node 16 deprecation ([#452](https://github.com/tiborsimko/reana-commons/issues/452)) ([ac2a01b](https://github.com/tiborsimko/reana-commons/commit/ac2a01b4162f5889837b7328eefb5d7908929ad9))
+* **actions:** upgrade to Ubuntu 24.04 and Python 3.12 ([#465](https://github.com/tiborsimko/reana-commons/issues/465)) ([6fa5566](https://github.com/tiborsimko/reana-commons/commit/6fa5566f0d778bca33acffe89d1c1af0d69a10e0))
+* added flake8 linter ([a48dcd8](https://github.com/tiborsimko/reana-commons/commit/a48dcd8d7b9260b8ddb973747f43104e9685bee3))
+* added github actions workflow ([80b4c2a](https://github.com/tiborsimko/reana-commons/commit/80b4c2a3b4bc583073f2e6385d8aa3800ce8507d))
+* added python 2.7 to github action python test strategy ([5b8c024](https://github.com/tiborsimko/reana-commons/commit/5b8c0246fe874290576a2738def2a44080e72112)), closes [#233](https://github.com/tiborsimko/reana-commons/issues/233)
+* **commitlint:** addition of commit message linter ([#432](https://github.com/tiborsimko/reana-commons/issues/432)) ([a67906f](https://github.com/tiborsimko/reana-commons/commit/a67906fe8620e1f624e24e8a4511694a9b60378d))
+* **commitlint:** allow release commit style ([#447](https://github.com/tiborsimko/reana-commons/issues/447)) ([1208ccf](https://github.com/tiborsimko/reana-commons/commit/1208ccf2de844afe788d7bbccbd4f63b24af427e))
+* **commitlint:** check for the presence of concrete PR number ([#438](https://github.com/tiborsimko/reana-commons/issues/438)) ([d3035dc](https://github.com/tiborsimko/reana-commons/commit/d3035dc12cecf16edcbec462dfdb1386da16f6d6))
+* **commitlint:** improve checking of merge commits ([#465](https://github.com/tiborsimko/reana-commons/issues/465)) ([273b72d](https://github.com/tiborsimko/reana-commons/commit/273b72df4edeeaa759f3153ce453285597f4681b))
+* pin ubuntu version in GA jobs ([cbfc143](https://github.com/tiborsimko/reana-commons/commit/cbfc143f1f32a7b88b6d180ca7a991b56d1b6ebe))
+* **pytest:** invoke `pytest` directly instead of `setup.py test` ([#466](https://github.com/tiborsimko/reana-commons/issues/466)) ([ed6c468](https://github.com/tiborsimko/reana-commons/commit/ed6c4689c461c3831efbd60b83be807e16240392))
+* **release-please:** initial configuration ([#432](https://github.com/tiborsimko/reana-commons/issues/432)) ([687f2f4](https://github.com/tiborsimko/reana-commons/commit/687f2f4ea8c5c49a70c6f121faf7e59a98dd3138))
+* removed pip upgrade ([efe654b](https://github.com/tiborsimko/reana-commons/commit/efe654b566e7c4110c91762e6cc1b2ac43e90581))
+* **shellcheck:** check all shell scripts recursively ([#436](https://github.com/tiborsimko/reana-commons/issues/436)) ([709a685](https://github.com/tiborsimko/reana-commons/commit/709a685b3a8586b069a98c0338283a6bd2721005))
+* **shellcheck:** fix exit code propagation ([#438](https://github.com/tiborsimko/reana-commons/issues/438)) ([85d9a2a](https://github.com/tiborsimko/reana-commons/commit/85d9a2a68e3929f442e03d5422a37ffd6b7169c6))
+* **tox:** fix collecting code coverage information ([#470](https://github.com/tiborsimko/reana-commons/issues/470)) ([ebf3695](https://github.com/tiborsimko/reana-commons/commit/ebf3695f2c641070ecec517e4ae316dfc3e807be))
+* update all actions ([dd3d0ba](https://github.com/tiborsimko/reana-commons/commit/dd3d0bab733071136ff0cdfdd54e36e2f5788b9d))
+* use Python 3.12 stable release ([e49b0c7](https://github.com/tiborsimko/reana-commons/commit/e49b0c7fdd5b7428b359c946d468bbdff10d7b14))
+
+
+### Documentation
+
+* add .readthedocs.yaml to migrate to RTD v2 ([6682140](https://github.com/tiborsimko/reana-commons/commit/66821403d8b40a8929677b988c5a4262a13574e5))
+* **authors:** complete list of contributors ([#442](https://github.com/tiborsimko/reana-commons/issues/442)) ([4a74c10](https://github.com/tiborsimko/reana-commons/commit/4a74c10e7a248f580778ebc772bffe94e533e7ed))
+* fix docstrings for kombu class references ([8af0606](https://github.com/tiborsimko/reana-commons/commit/8af06066687207d334562e70a6abe146e4c79427))
+* fix docstrings for kombu class references ([8c20f2e](https://github.com/tiborsimko/reana-commons/commit/8c20f2e75c5e9da9e65450244c387b0f8d57121c))
+* install only docs required dependencies for RTD build ([77e0d9f](https://github.com/tiborsimko/reana-commons/commit/77e0d9f0d095d19b8dfe3ed8a1970a5733e85907)), closes [#210](https://github.com/tiborsimko/reana-commons/issues/210)
+* remove reana-cluster references ([f558c06](https://github.com/tiborsimko/reana-commons/commit/f558c0603b086a84995ced122fd99d05852679bb))
+* set default language to English ([0247a25](https://github.com/tiborsimko/reana-commons/commit/0247a25d9744f07c530459017c45fe9ab7bc9e99))
+* single-page RTFD outline ([e387aba](https://github.com/tiborsimko/reana-commons/commit/e387aba8524298ad99e87612cd9cd7dd3e71f147))
+* switch to stable version of kombu ([daf272e](https://github.com/tiborsimko/reana-commons/commit/daf272ec5f3a2f91220f9318be546ba4d542024d))
+* switch to stable version of kombu ([12a44e2](https://github.com/tiborsimko/reana-commons/commit/12a44e23cae0f8802cd243c06d4d50f289bd9360))
+* update changelog ([f79147a](https://github.com/tiborsimko/reana-commons/commit/f79147a060c1ef7d02b6857fef9579d72ced6414))
+
+
+### Chores
+
+* **master:** release 0.95.0a1 ([024776f](https://github.com/tiborsimko/reana-commons/commit/024776f707e8573a19daa4eaf5b239e7dc1257f0))
+
 ## [0.9.8](https://github.com/reanahub/reana-commons/compare/0.9.7...0.9.8) (2024-03-01)
 
 
