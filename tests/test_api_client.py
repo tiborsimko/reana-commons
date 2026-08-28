@@ -144,6 +144,24 @@ def test_base_api_client_raises_when_reana_server_url_is_unconfigured(monkeypatc
         BaseAPIClient("reana-server")
 
 
+def test_base_api_client_preserves_explicit_placeholder_like_environment_url(
+    monkeypatch,
+):
+    """Only the implicit config fallback is missing configuration."""
+    monkeypatch.setenv("REANA_SERVER_URL", "http://0.0.0.0:80")
+    monkeypatch.setattr(BaseAPIClient, "_get_spec", mock.Mock(return_value={}))
+    swagger_client = mock.Mock()
+    swagger_client.swagger_spec.http_client = mock.Mock()
+    monkeypatch.setattr(
+        "reana_commons.api_client.SwaggerClient.from_spec",
+        mock.Mock(return_value=swagger_client),
+    )
+
+    BaseAPIClient("reana-server")
+
+    assert swagger_client.swagger_spec.api_url == "http://0.0.0.0:80"
+
+
 def test_base_api_client_prefers_explicit_server_url(monkeypatch):
     """An explicitly passed server URL wins over environment and mapping."""
     monkeypatch.setenv("REANA_SERVER_URL", "raw-environment-value")

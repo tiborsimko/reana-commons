@@ -220,15 +220,17 @@ class BaseAPIClient(object):
         if server_url:
             return server_url
         if service == "reana-server":
-            resolved = os.getenv("REANA_SERVER_URL") or configured_url
+            environment_url = os.getenv("REANA_SERVER_URL")
+            if environment_url:
+                return environment_url
             # config.py's OPENAPI_SPECS falls back to this same placeholder
             # host when REANA_SERVER_URL was never set. It's a syntactically
             # valid, non-None URL, so without this check an unconfigured
             # client would silently target it instead of the caller getting
             # a MissingAPIClientConfiguration it can act on.
-            if resolved == "http://0.0.0.0:80":
+            if configured_url == "http://0.0.0.0:80":
                 return None
-            return resolved
+            return configured_url
         return configured_url
 
     def _get_spec(self, spec_file):
