@@ -124,6 +124,26 @@ def test_base_api_client_preserves_configured_server_without_env(monkeypatch):
     assert swagger_client.swagger_spec.api_url == "https://configured.example.org"
 
 
+def test_base_api_client_raises_when_reana_server_url_is_unconfigured(monkeypatch):
+    """An unset REANA_SERVER_URL must raise, not silently target 0.0.0.0.
+
+    config.py's OPENAPI_SPECS falls back to http://0.0.0.0:80 as a
+    placeholder when the env var was never set -- that placeholder must
+    not be treated as a real, usable configured URL.
+    """
+    from reana_commons.errors import MissingAPIClientConfiguration
+
+    monkeypatch.delenv("REANA_SERVER_URL", raising=False)
+    monkeypatch.setattr(BaseAPIClient, "_get_spec", mock.Mock(return_value={}))
+    monkeypatch.setattr(
+        "reana_commons.api_client.OPENAPI_SPECS",
+        {"reana-server": ("http://0.0.0.0:80", "reana_server.json")},
+    )
+
+    with pytest.raises(MissingAPIClientConfiguration):
+        BaseAPIClient("reana-server")
+
+
 def test_base_api_client_prefers_explicit_server_url(monkeypatch):
     """An explicitly passed server URL wins over environment and mapping."""
     monkeypatch.setenv("REANA_SERVER_URL", "raw-environment-value")
@@ -173,6 +193,33 @@ def test_base_api_client_isolates_clients_for_different_server_urls(monkeypatch)
     assert first._client.swagger_spec.api_url == "https://first.example.org"
     assert second._client.swagger_spec.api_url == "https://second.example.org"
     assert from_spec.call_count == 2
+
+
+def test_base_api_client_only_parses_spec_on_cache_miss(monkeypatch):
+    """A cache hit must not re-parse the spec file.
+
+    A LocalProxy-backed client (e.g. current_rs_api_client) constructs a
+    BaseAPIClient on every attribute access, so re-parsing the spec on an
+    already-cached (service, server_url, ssl_verify) key would defeat the
+    point of caching the Bravado client at all.
+    """
+    swagger_client = mock.Mock()
+    swagger_client.swagger_spec.http_client = mock.Mock()
+    monkeypatch.setattr(
+        "reana_commons.api_client.SwaggerClient.from_spec",
+        mock.Mock(return_value=swagger_client),
+    )
+    get_spec = mock.Mock(return_value={})
+    monkeypatch.setattr(BaseAPIClient, "_get_spec", get_spec)
+    monkeypatch.setattr(
+        "reana_commons.api_client.OPENAPI_SPECS",
+        {"reana-server": ("https://configured.example.org", "reana_server.json")},
+    )
+
+    BaseAPIClient("reana-server", server_url="https://same.example.org")
+    BaseAPIClient("reana-server", server_url="https://same.example.org")
+
+    assert get_spec.call_count == 1
 
 
 @pytest.mark.parametrize(

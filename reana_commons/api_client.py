@@ -180,10 +180,9 @@ class BaseAPIClient(object):
             raise MissingAPIClientConfiguration(
                 "Configuration to connect to {} is missing.".format(service)
             )
-        json_spec = self._get_spec(spec_file)
         if http_client is not None:
             client = SwaggerClient.from_spec(
-                json_spec,
+                self._get_spec(spec_file),
                 http_client=http_client,
                 config={"also_return_response": True},
             )
@@ -192,8 +191,13 @@ class BaseAPIClient(object):
             with BaseAPIClient._bravado_client_lock:
                 client = BaseAPIClient._bravado_client_instances.get(cache_key)
                 if client is None:
+                    # Only parse the (217KB) spec file on an actual cache
+                    # miss -- LocalProxy-backed clients (e.g. current_rs_api
+                    # _client) construct a BaseAPIClient on every attribute
+                    # access, so parsing it unconditionally here defeated
+                    # the point of this cache.
                     client = SwaggerClient.from_spec(
-                        json_spec,
+                        self._get_spec(spec_file),
                         http_client=StreamingRequestsClient(ssl_verify=ssl_verify),
                         config={"also_return_response": True},
                     )
@@ -216,7 +220,15 @@ class BaseAPIClient(object):
         if server_url:
             return server_url
         if service == "reana-server":
-            return os.getenv("REANA_SERVER_URL") or configured_url
+            resolved = os.getenv("REANA_SERVER_URL") or configured_url
+            # config.py's OPENAPI_SPECS falls back to this same placeholder
+            # host when REANA_SERVER_URL was never set. It's a syntactically
+            # valid, non-None URL, so without this check an unconfigured
+            # client would silently target it instead of the caller getting
+            # a MissingAPIClientConfiguration it can act on.
+            if resolved == "http://0.0.0.0:80":
+                return None
+            return resolved
         return configured_url
 
     def _get_spec(self, spec_file):
